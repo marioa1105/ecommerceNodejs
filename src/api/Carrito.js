@@ -7,9 +7,11 @@ class Carrito{
         this.producto = new Producto();
         this.items= [];
     }
-    saveCarrito(carrito){
+    addProductoCarrito(producto){
         let id;
-        
+        let carrito = new Carrito();
+        carrito.timestamp = new Date();
+        carrito.producto = producto;
         if (this.items.length == 0){
             id = 1;
         }else{
@@ -17,7 +19,7 @@ class Carrito{
         }
         
         item.id = id;
-        this.items.push(item);
+        this.items.push(carrito);
         return item;
     }
     getCarritos(){

@@ -1,14 +1,13 @@
 const express = require('express');
-const productoRoutes = require('./routes/routeProductos.js');
+const productoRoutes = require('./routes/routeProducto.js');
 const carritoRoutes = require('./routes/routeCarrito.js');
 const handlebars = require('express-handlebars');
-
-
 
 const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const PORT = 8080;
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -27,11 +26,17 @@ app.set('view engine', 'hbs');
 app.set('views', './views');
 
 //API
+
 app.use('/api',productoRoutes);
 app.use('/api',carritoRoutes);
 
 app.get('/',(req,res)=>{
 
+});
+
+app.use((err, req, res, next) => {
+    
+    res.status(500).json({ error: -1, descripcion: err.message });
 });
 
 server.listen(PORT, () =>{
@@ -41,3 +46,4 @@ server.listen(PORT, () =>{
 server.on('error', error => {
     console.log('error en el servidor:', error);
 });
+
