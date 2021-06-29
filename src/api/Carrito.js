@@ -27,13 +27,13 @@ class Carrito{
                 await this.data.save(items);
             }            
         }
-        return ;
+        return carrito.id;
     }
     async addProductoCarrito(idProducto,carritoId){        
         let carrito;
         let index = -1;
         let producto = new Producto();
-        await this.createCarrito(carritoId);
+        carritoId = await this.createCarrito(carritoId);
         producto = await producto.getProductoById(idProducto)        
         this.items = await this.data.read();
         index = this.items.findIndex(x=> x.id == carritoId);                        

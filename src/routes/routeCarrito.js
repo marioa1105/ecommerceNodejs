@@ -33,13 +33,7 @@ route.post('/carrito/agregar/:id',(req,res)=>{
     try{  
         let producto = new Producto();
         
-        
-        if(carrito.id == 0){
-            let items = serviceCarrito.getCarritos()
-            carrito.id = items.length + 1;                                            
-        }
-
-        serviceCarrito.addProductoCarrito(req.params.id, carrito.id).then(item => res.json(item));
+        serviceCarrito.addProductoCarrito(req.params.id, req.query.idCarrito).then(item => res.json(item));
     }catch(err){
         res.status(404).json({error: err.message});
     }    
@@ -48,7 +42,7 @@ route.post('/carrito/agregar/:id',(req,res)=>{
 
 route.delete('/carrito/borrar/:id',(req,res)=>{
     try{        
-        serviceCarrito.deleteProductoFromCarrito(req.params.id,carrito.id)
+        serviceCarrito.deleteProductoFromCarrito(req.params.id, req.query.idCarrito)
                         .then(items => res.json(items))
                         .catch(err => {
                             res.status(404).json({error: err.message});
