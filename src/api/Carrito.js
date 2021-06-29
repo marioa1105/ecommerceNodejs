@@ -1,59 +1,74 @@
 const Producto = require("./Producto");
-
+const CarritoData = require("../data/Archivos");
 class Carrito{
     constructor(){
         this.id=0;
         this.timestamp= new Date();
-        this.producto = new Producto();
+        this.productos = new Array();
         this.items= [];
+        this.data = new CarritoData('Carritos.txt');
     }
-    addProductoCarrito(producto){
-        let id;
+    async createCarrito(carritoId){
+        let items = await this.data.read();
         let carrito = new Carrito();
-        carrito.timestamp = new Date();
-        carrito.producto = producto;
-        if (this.items.length == 0){
-            id = 1;
+        if (items.length == 0){
+            items = new Array();
+            
+            carrito.id = 1;
+            items.push(carrito);
+            await this.data.save(items);
         }else{
-            id = this.items.length + 1;
+            if (items.findIndex(x => x.id == carritoId) >= 0){
+                carrito = this.items.find(x => x.id == carritoId);
+            }else{
+                
+                carrito.id = items.length + 1;
+                items.push(carrito);
+                await this.data.save(items);
+            }            
         }
-        
-        item.id = id;
-        this.items.push(carrito);
-        return item;
+        return ;
+    }
+    async addProductoCarrito(idProducto,carritoId){        
+        let carrito;
+        let index = -1;
+        let producto = new Producto();
+        await this.createCarrito(carritoId);
+        producto = await producto.getProductoById(idProducto)        
+        this.items = await this.data.read();
+        index = this.items.findIndex(x=> x.id == carritoId);                        
+        this.items[index].productos.push(producto);        
+        await this.data.save(this.items);
+        return this.items[index];
     }
     getCarritos(){
-        if (this.items == 0){
-            throw new Error("No existe el carrito");
-        }
+        this.items = this.data.readSync();
+        
+
         return this.items;
     }
-    getCarritoById(id){
-        let obj = this.items.find(x => x.id == id);
-        if(obj == null || obj == undefined){
-            throw new Error("Carrito no encontrado");            
+    getProductosCarritoById(id){
+        this.items = this.data.readSync();
+        let index = this.items.findIndex(x => x.id == id);
+        if(index < 0){
+            return [];
         }
-        return obj;
+        return this.items[index].productos;
     }
-    updateCarrito(prod, id){
+    
+    async deleteProductoFromCarrito(idProducto, idCarrito){
         try{
-            let index = this.items.findIndex(x => x.id == id);            
+            this.items = await this.data.read();
+            let indexCarrito = this.items.findIndex(x=> x.id == idCarrito);
+            if (indexCarrito < 0)
+                throw new Error("El carrito está vacio");
+            
+            let index = this.items[indexCarrito].productos.findIndex(x => x.id == idProducto);
             if (index < 0)
-                throw new Error("No se encontro el carrito");
-            prod.id = id;
-            this.items.splice(index,1,prod);
-            return this.items;
-        }catch(error){
-            throw error;
-        }
-    }
-    deleteCarrito(id){
-        try{
-            let index = this.items.findIndex(x => x.id == id);
-            if (index < 0)
-                throw new Error("No se encontro el carrito");
-            this.items.splice(index,1);
-            return this.items;
+                throw new Error("No se encontro el producto");
+            this.items[indexCarrito].productos.splice(index,1);
+            await this.data.save(this.items);
+            return this.items[indexCarrito].productos;
         }catch(error){
             throw error;
         }

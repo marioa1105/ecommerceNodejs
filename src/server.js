@@ -36,7 +36,7 @@ app.get('/',(req,res)=>{
 
 app.use((err, req, res, next) => {
     
-    res.status(500).json({ error: -1, descripcion: err.message });
+    res.status(401).json({ error: -1, descripcion: err.message });
 });
 
 server.listen(PORT, () =>{

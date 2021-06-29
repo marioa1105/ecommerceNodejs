@@ -1,3 +1,4 @@
+const { json } = require('express');
 const fs = require('fs');
 class Archivo{
     constructor(fileName){
@@ -22,7 +23,20 @@ class Archivo{
             data = JSON.stringify(data);
         }  
         
-        return data;                      
+        return JSON.parse(data);                      
+    }
+    readSync(){
+        let data;
+        try{            
+            data = fs.readFileSync(this.fileName,'utf-8');
+            
+        }catch(error){   
+                   
+            data = [];
+            data = JSON.stringify(data);
+        }  
+        
+        return JSON.parse(data);  
     }
     async delete(){
         try{
