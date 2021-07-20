@@ -1,0 +1,40 @@
+{
+    "tipoPersistencia":2,
+    "persistencia":[
+        {
+            "tipo":2,
+            "proveedor":"mysqlProvider",
+            "connection":{
+                "client": "mysql",
+                "connection": {
+                    "host": "127.0.0.1",
+                    "user": "root",
+                    "password": "",
+                    "database": "ecommerceCoder"
+                },
+                "pool": { "min": 0, "max": 7 }
+            }
+        },
+        {
+            "tipo":3,
+            "proveedor":"mysqlProvider",
+            "connection":{
+                "client": "sqlite3",
+                "connection": {
+                    "filename": "D:/Curso/Backend Node/ecommerce/src/data/ecommerceCoder.sqlite"
+                },
+                "useNullAsDefault": true
+            }
+        },
+        {
+            "tipo":5,
+            "proveedor":"mongoProvider",
+            "connection":"mongodb://localhost:27017/ecommerceCoder"            
+        },
+        {
+            "tipo":6,
+            "proveedor":"mongoProvider",
+            "connection":"mongodb://mario:mario@cluster0-shard-00-00.4jorw.mongodb.net:27017,cluster0-shard-00-01.4jorw.mongodb.net:27017,cluster0-shard-00-02.4jorw.mongodb.net:27017/myFirstDatabase?ssl=true&replicaSet=atlas-jm0y3k-shard-0&authSource=admin&retryWrites=true&w=majority"            
+        }
+    ]
+}
