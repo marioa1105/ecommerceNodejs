@@ -10,7 +10,8 @@ class Producto extends IBase{
         mongoose.connect(connection, { useNewUrlParser: true, useUnifiedTopology: true })
             .then(()=> {
                 console.log('Conexion exitosa');
-            });
+            })
+            .catch(err => console.log(err));
     }
     async getLastId(){
         let last = await Model.find({}).sort({id:"desc"}).limit(1);
