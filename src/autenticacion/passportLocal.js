@@ -22,15 +22,19 @@ passport.use('login', new LocalStrategy({
 );
 
 passport.use('signup', new LocalStrategy({
+    usernameField : 'email',
+    passwordField : 'password',
     passReqToCallback: true
-}, async function (req, newUser, done) {
+}, async function (req, email,password, done) {
     let usuarioService = new UsuarioController();
-    let usuario = await usuarioService.getUserByEmail(username);
-
-    if (usuario) {
+    let exists = await usuarioService.existsUser(email);
+    
+    if (exists) {
         return done(null, false, console.log('mensaje', 'usuario ya existe'));
-    } else {
+    } else {       
+        let newUser =  req.body;
         await usuarioService.saveUsuario(newUser);
+        usuarioService.notificacionUsuario(newUser);
         return done(null, newUser);
     }
 })

@@ -10,7 +10,8 @@ btnRegistrar.addEventListener("click",function(e){
         edad: document.getElementById('txtEdad').value,
         telefono: document.getElementById('txtTelefono').value
     };
-    
+    let userName = document.getElementById('txtEmail').value;
+    let password = document.getElementById('txtPassword').value;
     
     fetch('/signup', {
         headers: {

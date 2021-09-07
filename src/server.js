@@ -5,12 +5,15 @@ const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+
+
 const dotenv = require('dotenv');
 
 const productoRoutes = require('./routes/routeProducto.js');
 const carritoRoutes = require('./routes/routeCarrito.js');
 const passport = require('./autenticacion/passportLocal.js');
 
+const ProductosController = require('./api/ProductoController');
 dotenv.config();
 
 const PORT = 8080;
@@ -66,7 +69,7 @@ app.post('/login', passport.authenticate('login', { failureRedirect: '/faillogin
     res.redirect('/');    
 });
 app.get('/login', (req, res) => {
-    res.render('login');
+    res.render('autenticacion/login');
 });
 app.get('/faillogin', (req, res) => {
     res.status(400).render('faillogin');
@@ -77,17 +80,29 @@ app.post('/signup', passport.authenticate('signup', { failureRedirect: '/failsig
     res.redirect('/login');
 });
 app.get('/signup',(req,res)=>{
-    res.render('signup');
+    res.render('autenticacion/signup');
 });
 app.get('/failsignup', (req, res) => {    
-    res.status(400).render('failssignup');
+    res.status(400).json({error : "Error al registrar usuario"});
+    
 });
 
-app.get('/logout',auth,(req,res)=>{
+app.get('/logout',(req,res)=>{
     let user = req.user.UserName;
     req.logout();
     res.render('logout',{'userName':  user});        
 });
+
+//PRODUCTOS
+app.get('/productos/nuevo',(req,res) => {
+    res.render('productos/nuevoProducto');
+})
+app.get('/productos/listado', async(req,res) => {
+    let productos = new ProductosController();
+    let listado = await productos.getProductos();
+    let hayProductos = listado.length == 0? false: true;
+    res.render('productos/detalleProductos',{hayProductos: hayProductos, productos: listado});
+})
 
 //middleware
 app.use((err, req, res, next) => {    

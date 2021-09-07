@@ -25,8 +25,9 @@ class Usuario extends IBase{
     
     async getById(id){
         try{            
-            let producto = await Model.find({email: id});            
-            return producto[0];
+            let users = await Model.find({email: id});            
+        
+            return users;
         }
         catch(err){
             throw new Error(`Error al recuperar usuario [${id}]: ${err.message}`);

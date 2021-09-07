@@ -14,10 +14,18 @@ class Producto{
     async getProductos(){
         let items = new Array();
         items =  await this.data.getAll();
-        if (items.length == 0){
-            throw new Error("No hay productos cargados");
-        }
-        return items;
+        let productos = items.map(x => {
+            return {
+                id: x.id,
+                nombre: x.nombre,
+                descripcion: x.descripcion,
+                precio: x.precio,
+                stock: x.stock,
+                foto: x.foto
+            };
+        })
+        
+        return productos;
     }
     async getProductoById(id){
         let item = await this.data.getById(id);
