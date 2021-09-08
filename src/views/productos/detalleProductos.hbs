@@ -1,31 +1,30 @@
-<div class="jumbotron">
-    <h1>Vista de Productos</h1>
-    <br>
+
 
     {{#if hayProductos}} 
-        <div class="table-responsive">
-            <table class="table table-dark">
-                <tr>
-                    <th>Id</th>  
-                    <th>Nombre</th>
-                    <th>Descripcion</th> 
-                    <th>Precio</th> 
-                    <th>Stock</th> 
-                    <th>Foto</th>
-                </tr>
-                {{#each productos}}
-                    <tr>
-                        <td>{{this.id}}</td>  
-                        <td>{{this.nombre}}</td> 
-                        <td>{{this.descripcion}}</td> 
-                        <td>$ {{this.precio}}</td> 
-                        <td>{{this.stock}}</td> 
-                        <td><img width="50" src={{this.foto}} alt="not found"></td> 
-                    </tr>
-                {{/each}}
-            </table>
+        <div class="row">
+            {{#each productos}}
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src={{this.foto}} alt="not found" width="100" height="100">
+                    
+                    <div class="card-body">
+                        <h5 class="card-title">{{this.nombre}}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">$ {{this.precio}}</h6>
+                        <p class="card-text">{{this.descripcion}}</p>
+                        <button id="btnAddItemCarrito" class="btn btn-primary" data-id = {{this.id}}>Agregar</button>
+                    </div>
+                </div>                
+            {{/each}}
         </div>
+        
     {{else}}  
         <h3 class="alert alert-warning">No se encontraron productos</h3>
     {{/if}}
-</div>
+
+
+
+    <div class="row">
+        <div class="col">
+            <button id="btnFinalizarCarrito" value="Finaliza" class="btn btn-primary">Finalizar</button>
+        </div>
+    </div>
+<script src="/scripts/productos/addItemCarrito.js"></script>

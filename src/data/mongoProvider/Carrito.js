@@ -23,14 +23,14 @@ class Carrito extends IBase{
         return lastId;
     }
     async save(data){
-        try{                        
-            if(data.id == null){
-                data.id = await this.getLastId();
+        try{    
+            let carrito = await this.getById(data.username);              
+            if(carrito.length == 0){                
                 Model.create(data);
             }           
             else
             {
-                await Model.updateOne({id:data.id},
+                await Model.updateOne({username:data.username},
                         {
                             $push:{
                                 productos: data.productos[0]
@@ -63,7 +63,7 @@ class Carrito extends IBase{
             if (id == undefined){
                 items = await Model.find({});    
             }else{
-                items = await Model.find({id: id});
+                items = await Model.find({username: id});
             }
             
             

@@ -2,37 +2,20 @@ const ProductoModel = require("../model/ProductoModel");
 const ProductoController = require('./ProductoController');
 const CarritoData = require("../data/factory/CarritoFactory");
 const CarritoModel = require("../model/CarritoModel");
+const Mailer  = require('../messaging/Mailer');
+const Messaging = require('../messaging/Message');
+const UsuariosController = require('./UsuarioController');
 class Carrito{
     constructor(){
         
         this.data = new CarritoData();
     }
-    /*async createCarrito(carritoId){
-        let items = await this.data.getById(carritoId);
-        let carrito = new Carrito();
-        if (items == null){
-            items = new Array();
-            
-            carrito.id = 1;
-            items.push(carrito);
-            await this.data.save(items);
-        }else{
-            if (items.findIndex(x => x.id == carritoId) >= 0){
-                carrito = this.items.find(x => x.id == carritoId);
-            }else{
-                
-                carrito.id = items.length + 1;
-                items.push(carrito);
-                await this.data.save(items);
-            }            
-        }
-        return carrito.id;
-    }*/
-    async addProductoCarrito(idProducto,carritoId){        
+    
+    async addProductoCarrito(idProducto,username){        
         let carrito = new CarritoModel();
         let controller = new ProductoController();        
         let producto = new ProductoModel();
-        carrito.id = carritoId; //await this.createCarrito(carritoId);
+        carrito.username = username; //await this.createCarrito(carritoId);
         producto = await controller.getProductoById(idProducto)        
         carrito.productos.push(producto);
         await this.data.save(carrito);
@@ -53,6 +36,30 @@ class Carrito{
         }catch(error){
             throw error;
         }
+    }
+
+    async finalizarCompra(username){
+        let controller = new UsuariosController();
+        let usuario = await controller.getUserByEmail(username);
+        let carrito = await this.getProductosCarritoById(username);
+        this.notificacionCompra(carrito[0], usuario);
+    }
+    notificacionCompra(carrito, usuario){
+        let mail = new Mailer(process.env.SMTP_EMAIL,process.env.SMTP_PASSWORD,process.env.SMTP_FROM);
+        let messaging = new Messaging(process.env.TWILIO_SID,process.env.TWILIO_TOKEN);
+        let subject = `Nuevo pedido de ${usuario.nombre} - ${usuario.email}`;
+        let bodyMail ="";
+        let message = subject;
+        for(let i = 0; i < carrito.productos.length; i++){
+            bodyMail = bodyMail + `<p>Nombre: ${carrito.productos[i].nombre} - Precio: ${carrito.productos[i].precio}</p>`;
+            message = message + `
+                        Nombre: ${carrito.productos[i].nombre} - Precio: ${carrito.productos[i].precio} 
+                        `;
+        }        
+        mail.sendMail(process.env.EMAIL_ADMIN,subject,bodyMail);
+        
+        messaging.sendMessageWhatsapp(message ,'');
+        return;
     }
 }
 

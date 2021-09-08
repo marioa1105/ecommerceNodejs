@@ -1,7 +1,7 @@
 const UsuarioData = require('../Data/factory/UsuarioFactory');
 const Model = require('../model/UsuarioModel');
 const bcrypt = require('bcrypt');
-const Mailer  = require('../mailer/Mailer');
+const Mailer  = require('../messaging/Mailer');
 
 class UsuarioController{     
     constructor(){        

@@ -5,7 +5,7 @@ const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
-
+const FileStore = require('session-file-store')(session);
 
 const dotenv = require('dotenv');
 
@@ -28,12 +28,8 @@ app.use('/scripts', express.static(__dirname + '/public/scripts'));
 app.use(cookieParser());
 app.use(session({              
     secret: 'secreto',
-    cookie:{
-        httpOnly:false,
-        secure:false,
-        maxAge:10000
-    },
-    resave: true,
+    store:new FileStore({ path:'../sesiones', ttl: 10000, retries:0}),    
+    resave: false,
     saveUninitialized: false
 }));
 
@@ -64,8 +60,8 @@ app.get('/',(req,res)=>{
 
 //LOGIN
 app.post('/login', passport.authenticate('login', { failureRedirect: '/faillogin' }),(req,res)=>{
-    let { userName } = req.body;
-    req.session.userName = userName;  
+    let { username } = req.body;
+    req.session.username = username;  
     res.redirect('/');    
 });
 app.get('/login', (req, res) => {
@@ -88,7 +84,7 @@ app.get('/failsignup', (req, res) => {
 });
 
 app.get('/logout',(req,res)=>{
-    let user = req.user.UserName;
+    let user = req.user.username;
     req.logout();
     res.render('logout',{'userName':  user});        
 });

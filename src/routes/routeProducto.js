@@ -69,4 +69,4 @@ function permisosAdmin(req,res,next){
 }
 
 
-module.exports = route;
+module.exports =  route;

@@ -18,7 +18,7 @@ route.get('/carrito/listar',async(req,res)=>{
 
 route.post('/carrito/agregar/:id',async(req,res)=>{
     try{                  
-        let item = await serviceCarrito.addProductoCarrito(req.params.id, req.query.idCarrito);
+        let item = await serviceCarrito.addProductoCarrito(req.params.id, req.session.username);
         res.json(item);
     }catch(err){
         res.status(404).json({error: err.message});
@@ -34,5 +34,12 @@ route.delete('/carrito/borrar/:id',async(req,res)=>{
         res.status(404).json({error: err.message});
     }    
 });
-
+route.post('/carrito/finalizar',async(req,res)=>{
+    try{                  
+        let item = await serviceCarrito.finalizarCompra(req.session.username);
+        res.json(item);
+    }catch(err){
+        res.status(404).json({error: err.message});
+    }    
+}); 
 module.exports =  route;
