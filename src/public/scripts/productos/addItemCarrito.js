@@ -10,15 +10,3 @@ btnbtnAddItemCarrito.addEventListener("click",function(e){
     });
 },false);
 
-const btnFinalizar = document.getElementById("btnFinalizarCarrito");
-
-btnFinalizar.addEventListener("click",function(e){
-    e.preventDefault();    
-    fetch(`/api/carrito/finalizar`, {        
-        method: 'POST'
-    })
-    .then(respuesta => alert('Compra finalizada...'))    
-    .catch(error => {
-        console.log('ERROR', error);
-    });
-},false);

@@ -1,0 +1,30 @@
+{{#if hayProductos}}
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <tr>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Foto</th>
+        </tr>
+        {{#each productos}}
+        <tr>
+            <td>{{this.title}}</td>
+            <td>${{this.price}}</td>
+            <td><img width="50" src={{this.thumbnail}} alt="not found"></td>
+        </tr>
+        {{/each}}
+    </table>
+</div>
+<div class="row">
+    <div class="col">
+        <button id="btnFinalizarCarrito" value="Finalizar" class="btn btn-primary">Finalizar</button>
+    </div>
+</div>
+
+<script src="/scripts/carrito/carrito.js"></script>
+{{else}}
+<h3 class="alert alert-warning">No se encontraron productos</h3>
+{{/if}}
+
+
+

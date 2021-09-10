@@ -9,6 +9,7 @@ passport.use('login', new LocalStrategy({
     async function (req, username, password, done) {
         let usuarioService = new UsuarioController();
         let usuario = await usuarioService.getUserByEmail(username);
+        console.log('login');
         if (!usuario) {
             return done(null, false, console.log('mensaje', 'usuario no encontrado'));
         } else {

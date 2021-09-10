@@ -12,8 +12,9 @@ const dotenv = require('dotenv');
 const productoRoutes = require('./routes/routeProducto.js');
 const carritoRoutes = require('./routes/routeCarrito.js');
 const passport = require('./autenticacion/passportLocal.js');
-
+const authUser = require('./middleware/authUser');
 const ProductosController = require('./api/ProductoController');
+const CarritoController = require('./api/CarritoController');
 dotenv.config();
 
 const PORT = 8080;
@@ -54,8 +55,9 @@ app.use('/api',productoRoutes);
 app.use('/api',carritoRoutes);
 
 //INDEX
-app.get('/',(req,res)=>{   
-    res.render('layouts/index');
+app.get('/',authUser.auth, (req,res)=>{   
+    
+    res.redirect('productos/listado');    
 });
 
 //LOGIN
@@ -65,6 +67,7 @@ app.post('/login', passport.authenticate('login', { failureRedirect: '/faillogin
     res.redirect('/');    
 });
 app.get('/login', (req, res) => {
+    
     res.render('autenticacion/login');
 });
 app.get('/faillogin', (req, res) => {
@@ -83,21 +86,45 @@ app.get('/failsignup', (req, res) => {
     
 });
 
-app.get('/logout',(req,res)=>{
-    let user = req.user.username;
-    req.logout();
-    res.render('logout',{'userName':  user});        
+app.get('/logout',(req,res)=>{    
+    req.session.destroy((err) => {
+        if (err) return next(err)
+        res.redirect('/');
+    })
+    
+    //res.render('logout',{'userName':  user});        
 });
 
 //PRODUCTOS
-app.get('/productos/nuevo',(req,res) => {
+app.get('/productos/nuevo',authUser.auth,(req,res) => {
     res.render('productos/nuevoProducto');
 })
-app.get('/productos/listado', async(req,res) => {
+app.get('/productos/listado',authUser.auth, async(req,res) => {
     let productos = new ProductosController();
     let listado = await productos.getProductos();
     let hayProductos = listado.length == 0? false: true;
     res.render('productos/detalleProductos',{hayProductos: hayProductos, productos: listado});
+})
+
+//CARRITO
+app.get('/carrito/listado',authUser.auth, async(req,res) => {
+    let controller = new CarritoController();
+    let carrito = await controller.getProductosCarritoById(req.session.username);
+    let hayProductos = false;
+    let productos = [];
+    if(carrito.length > 0){
+        if(carrito[0].productos.length > 0){
+            hayProductos = true;
+            productos = carrito[0].productos.map(x => {
+                return {
+                    title: x.nombre,
+                    price: x.precio,
+                    thumbnail: x.foto
+                }
+            })
+        }
+    }     
+    res.render('carrito/listado',{hayProductos: hayProductos, productos: productos});
 })
 
 //middleware
