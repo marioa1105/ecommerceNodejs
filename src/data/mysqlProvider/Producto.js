@@ -1,4 +1,4 @@
-const ProductoModel = require('../../model/ProductoModel');
+const DTO = require('../../DTO/Producto');
 const IBase = require('../base/ICrudBase')
 const connection = require('../config/Connection');
 const knex = require('knex')(connection);
@@ -62,15 +62,9 @@ class Producto extends IBase{
         }
     }
     async getObjectByRow(row){
-        let producto = new ProductoModel();
-        producto.nombre = row['nombre'];
-        producto.precio = row['precio'];
-        producto.timestamp = row['timestamp'];
-        producto.foto = row['foto'];
-        producto.stock = row['stock'];
-        producto.id = row['id'];
-        producto.codigo = row['codigo'];
-        producto.descripcion = row['descripcion'];
+        let producto = new DTO(row['id'],
+        row['timestamp'],row['nombre'],row['descripcion'],row['codigo'],row['foto'],row['precio'],row['stock']);
+        
         return producto;
     }
 

@@ -1,5 +1,4 @@
 const config = require('../config/tipoPersistencia.config.json');
-const knex = require('knex');
 class CarritoFactory{
     constructor(){
 

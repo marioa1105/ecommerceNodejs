@@ -1,5 +1,5 @@
 const ProductoData = require('../Data/factory/ProductoFactory');
-const Model = require('../model/ProductoModel');
+const Model = require('../DTO/Producto');
 
 class Producto{     
     constructor(){        

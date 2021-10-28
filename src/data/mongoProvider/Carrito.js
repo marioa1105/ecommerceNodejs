@@ -1,5 +1,5 @@
-const ProductoModel = require('../../model/ProductoModel');
-const CarritoModel = require('../../model/CarritoModel');
+const ProductoDTO = require('../../DTO/Producto');
+const CarritoDTO = require('../../DTO/Carrito');
 const IBase = require('../base/ICrudBase')
 const connection = require('../config/Connection');
 const mongoose = require('mongoose');
@@ -25,7 +25,7 @@ class Carrito extends IBase{
     async save(data){
         try{    
             let carrito = await this.getById(data.username);              
-            if(carrito.length == 0){                
+            if(carrito.productos.length == 0){                
                 Model.create(data);
             }           
             else
@@ -65,9 +65,26 @@ class Carrito extends IBase{
             }else{
                 items = await Model.find({username: id});
             }
+            let carrito = {};
+            if (items.length > 0){
+                carrito = new CarritoDTO(items._id, new Date(),new Array(), id);
+                for(let index = 0; index < items.productos.length; index++){
+                    let producto = new ProductoDTO(items.productos[index]._id,
+                        items.productos[index].timestamp,
+                        items.productos[index].nombre,
+                        items.productos[index].descripcion,
+                        items.productos[index].codigo,
+                        items.productos[index].foto,
+                        items.productos[index].precio,
+                        items.productos[index].stock);
+                    carrito.productos.push(producto);
+                }
+            }
+            else{
+                carrito = new CarritoDTO("", new Date(),new Array(), id);
+            }
             
-            
-            return items;
+            return carrito;
         }
         catch(err){
             throw new Error(`Error al recuperar el carrito [${id}]: ${err.message}`);

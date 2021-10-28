@@ -7,7 +7,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
 
-const dotenv = require('dotenv');
+
 
 const productoRoutes = require('./routes/routeProducto.js');
 const carritoRoutes = require('./routes/routeCarrito.js');
@@ -15,7 +15,7 @@ const passport = require('./autenticacion/passportLocal.js');
 const authUser = require('./middleware/authUser');
 const ProductosController = require('./api/ProductoController');
 const CarritoController = require('./api/CarritoController');
-dotenv.config();
+
 
 const PORT = 8080;
 
@@ -56,7 +56,7 @@ app.use('/api',carritoRoutes);
 
 //INDEX
 app.get('/',authUser.auth, (req,res)=>{   
-    
+    console.log('Index render listado')
     res.redirect('productos/listado');    
 });
 
@@ -64,6 +64,7 @@ app.get('/',authUser.auth, (req,res)=>{
 app.post('/login', passport.authenticate('login', { failureRedirect: '/faillogin' }),(req,res)=>{
     let { username } = req.body;
     req.session.username = username;  
+    console.log('Post loggin');
     res.redirect('/');    
 });
 app.get('/login', (req, res) => {
@@ -103,6 +104,7 @@ app.get('/productos/listado',authUser.auth, async(req,res) => {
     let productos = new ProductosController();
     let listado = await productos.getProductos();
     let hayProductos = listado.length == 0? false: true;
+    console.log('render detalleProductos');
     res.render('productos/detalleProductos',{hayProductos: hayProductos, productos: listado});
 })
 

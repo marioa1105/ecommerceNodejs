@@ -1,8 +1,9 @@
-const ProductoModel = require('../../model/ProductoModel');
+const DTO = require('../../DTO/Producto');
 const IBase = require('../base/ICrudBase')
 const connection = require('../config/Connection');
 const mongoose = require('mongoose');
 const Model = require('./model/Productos');
+const {ObjectId} = require('mongodb');
 
 class Producto extends IBase{
     constructor(){
@@ -33,8 +34,10 @@ class Producto extends IBase{
         }
     }
     async update(data,id){
+
         try{
-            await Model.updateOne({id:id},
+            let _id = ObjectId(id);
+            await Model.updateOne({_id:_id},
                                     {nombre: data.nombre,
                                         descripcion: data.descripcion,
                                         foto: data.foto,
@@ -48,7 +51,8 @@ class Producto extends IBase{
     }
     async delete(id){
         try{
-            await Model.deleteOne({id: id});            
+            let _id = ObjectId(id);
+            await Model.deleteOne({_id: _id});            
         }
         catch(err){
             throw new Error(`Error al actualizar el producto: ${err.message}`);
@@ -58,7 +62,11 @@ class Producto extends IBase{
     async getAll(){
         let lista = new Array();
         try{
-            lista = await Model.find({});            
+            let productos = await Model.find({});            
+            for(let index = 0; index < productos.length; index++){
+                let prod = this.getDtoToData(productos[index]);
+                lista.push(prod);
+            }
             return lista;
         }
         catch(err){
@@ -68,12 +76,20 @@ class Producto extends IBase{
 
     async getById(id){
         try{
-            let producto = await Model.find({id: id});            
-            return producto[0];
+            let _id = ObjectId(id);
+            let producto = await Model.findOne({_id: _id});            
+            let item = this.getDtoToData(producto);
+            return item;
         }
         catch(err){
             throw new Error(`Error al recuperar el producto [${id}]: ${err.message}`);
         }
+    }
+    getDtoToData(data){
+        let dto = new DTO(data._id, data.timestamp, 
+                            data.nombre, data.descripcion, data.codigo, data.foto, data.precio,
+                            data.stock);
+        return dto;
     }
     
 }

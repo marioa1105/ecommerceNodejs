@@ -1,4 +1,4 @@
-const CarritoModel = require('../../model/CarritoModel');
+const DTO = require('../../DTO/Carrito');
 const Producto = require('./Producto');
 const IBase = require('../base/ICrudBase')
 const connection = require('../config/Connection');
@@ -81,16 +81,16 @@ class Carrito extends IBase{
                 row  = await knex('carritos').where('id', id);
             }
             
-            let carritoDto = new CarritoModel();
+            let carritoDto = new DTO(-1, new Date(),new  Array(), "");
             let carritos = new Array();
             let ProductoData = new Producto();
-            carritoDto.id = -1;
+            //carritoDto.id = -1;
             
             for (let r of row) {     
                 if(carritoDto.id != r['id']){
                     if(carritoDto.id != -1){
                         carritos.push(carritoDto);
-                        carritoDto = new CarritoModel();
+                        carritoDto = new DTO();
                     }
                     carritoDto.id = r['id'];
                     carritoDto.timestamp = r['timestamp']

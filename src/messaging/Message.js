@@ -1,7 +1,6 @@
-const accountSid = 'AC90f142822b66c569ce2e95e50948d89b';
-const authToken = 'ad0815c47b6ffcbc38d2b33f484c931b';
+const configEnv = require('../config/config');
 
-const client = require('twilio')(accountSid, authToken);
+const client = require('twilio')(configEnv.TWILIO_SID, configEnv.TWILIO_TOKEN);
 
 
 
