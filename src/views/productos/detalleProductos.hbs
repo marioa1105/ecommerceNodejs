@@ -11,6 +11,7 @@
                         <h6 class="card-subtitle mb-2 text-muted">$ {{this.precio}}</h6>
                         <p class="card-text">{{this.descripcion}}</p>
                         <button id="btnAddItemCarrito" class="btn btn-primary" onclick="addItemClick('{{this.id}}')" >Agregar</button>
+                        <a href="/productos/{{this.id}}">Ver</a>
                     </div>
                 </div>                
             {{/each}}
