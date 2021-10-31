@@ -1,5 +1,5 @@
 const configEnv = require('../config/config');
-
+console.log("configEnv.TWILIO_SID:" + configEnv.TWILIO_SID);
 const client = require('twilio')(configEnv.TWILIO_SID, configEnv.TWILIO_TOKEN);
 
 

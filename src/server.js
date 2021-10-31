@@ -11,10 +11,11 @@ const FileStore = require('session-file-store')(session);
 
 const productoRoutes = require('./routes/routeProducto.js');
 const carritoRoutes = require('./routes/routeCarrito.js');
+const viewProductosRoutes = require('./routes/routeViewProductos');
+const viewCarritoRoutes = require('./routes/routeViewCarrito');
 const passport = require('./autenticacion/passportLocal.js');
 const authUser = require('./middleware/authUser');
-const ProductosController = require('./api/ProductoController');
-const CarritoController = require('./api/CarritoController');
+
 
 
 const PORT = 8080;
@@ -53,10 +54,11 @@ app.set('views', __dirname + '/views');
 //API
 app.use('/api',productoRoutes);
 app.use('/api',carritoRoutes);
-
+app.use('/productos',viewProductosRoutes);
+app.use('/carrito',viewCarritoRoutes);
 //INDEX
 app.get('/',authUser.auth, (req,res)=>{   
-    console.log('Index render listado')
+    
     res.redirect('productos/listado');    
 });
 
@@ -64,7 +66,7 @@ app.get('/',authUser.auth, (req,res)=>{
 app.post('/login', passport.authenticate('login', { failureRedirect: '/faillogin' }),(req,res)=>{
     let { username } = req.body;
     req.session.username = username;  
-    console.log('Post loggin');
+    
     res.redirect('/');    
 });
 app.get('/login', (req, res) => {
@@ -82,7 +84,7 @@ app.post('/signup', passport.authenticate('signup', { failureRedirect: '/failsig
 app.get('/signup',(req,res)=>{
     res.render('autenticacion/signup');
 });
-app.get('/failsignup', (req, res) => {    
+app.get('/failsignup', (err,req, res) => {    
     res.status(400).json({error : "Error al registrar usuario"});
     
 });
@@ -96,38 +98,8 @@ app.get('/logout',(req,res)=>{
     //res.render('logout',{'userName':  user});        
 });
 
-//PRODUCTOS
-app.get('/productos/nuevo',authUser.auth,(req,res) => {
-    res.render('productos/nuevoProducto');
-})
-app.get('/productos/listado',authUser.auth, async(req,res) => {
-    let productos = new ProductosController();
-    let listado = await productos.getProductos();
-    let hayProductos = listado.length == 0? false: true;
-    console.log('render detalleProductos');
-    res.render('productos/detalleProductos',{hayProductos: hayProductos, productos: listado});
-})
 
-//CARRITO
-app.get('/carrito/listado',authUser.auth, async(req,res) => {
-    let controller = new CarritoController();
-    let carrito = await controller.getProductosCarritoById(req.session.username);
-    let hayProductos = false;
-    let productos = [];
-    if(carrito.length > 0){
-        if(carrito[0].productos.length > 0){
-            hayProductos = true;
-            productos = carrito[0].productos.map(x => {
-                return {
-                    title: x.nombre,
-                    price: x.precio,
-                    thumbnail: x.foto
-                }
-            })
-        }
-    }     
-    res.render('carrito/listado',{hayProductos: hayProductos, productos: productos});
-})
+
 
 //middleware
 app.use((err, req, res, next) => {    

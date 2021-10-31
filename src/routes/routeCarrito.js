@@ -28,7 +28,7 @@ route.post('/carrito/agregar/:id',async(req,res)=>{
 
 route.delete('/carrito/borrar/:id',async(req,res)=>{
     try{        
-        let items = await serviceCarrito.deleteProductoFromCarrito(req.params.id, req.query.idCarrito);
+        let items = await serviceCarrito.deleteProductoFromCarrito(req.params.id, req.session.username);
         res.json(items);
     }catch(err){
         res.status(404).json({error: err.message});

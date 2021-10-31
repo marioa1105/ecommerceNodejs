@@ -32,7 +32,7 @@ class Carrito{
     async deleteProductoFromCarrito(idProducto, idCarrito){
         try{
             
-            await this.data.delete({id: parseInt(idCarrito), id_producto: parseInt(idProducto)});
+            await this.data.delete({id: idCarrito, id_producto: idProducto});
             return this.getProductosCarritoById(idCarrito);
         }catch(error){
             throw error;

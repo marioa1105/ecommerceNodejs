@@ -4,7 +4,7 @@ const IBase = require('../base/ICrudBase')
 const connection = require('../config/Connection');
 const mongoose = require('mongoose');
 const Model = require('./model/Carritos');
-
+const {ObjectId} = require('mongodb');
 class Carrito extends IBase{
     constructor(){
         super();
@@ -25,7 +25,7 @@ class Carrito extends IBase{
     async save(data){
         try{    
             let carrito = await this.getById(data.username);              
-            if(carrito.productos.length == 0){                
+            if(carrito.id == ""){                
                 Model.create(data);
             }           
             else
@@ -49,8 +49,9 @@ class Carrito extends IBase{
     }
     async delete(data){
         try{
-                                    
-            let result = await Model.update({id:data.id, $pull: {productos:{id:data.id_producto}}});
+            let _id = ObjectId(data.id_producto);
+            
+            let result = await Model.update({username:data.id, $pull: {productos:{id:_id}}});
             console.log(result);
         }
         catch(err){
@@ -61,15 +62,15 @@ class Carrito extends IBase{
         try{
             let items;
             if (id == undefined){
-                items = await Model.find({});    
+                items = await Model.findOne({});    
             }else{
-                items = await Model.find({username: id});
+                items = await Model.findOne({username: id});
             }
             let carrito = {};
-            if (items.length > 0){
+            if (items != null){
                 carrito = new CarritoDTO(items._id, new Date(),new Array(), id);
                 for(let index = 0; index < items.productos.length; index++){
-                    let producto = new ProductoDTO(items.productos[index]._id,
+                    let producto = new ProductoDTO(items.productos[index].id,
                         items.productos[index].timestamp,
                         items.productos[index].nombre,
                         items.productos[index].descripcion,

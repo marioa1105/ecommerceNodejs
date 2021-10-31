@@ -11,6 +11,9 @@
             <td>{{this.title}}</td>
             <td>${{this.price}}</td>
             <td><img width="50" src={{this.thumbnail}} alt="not found"></td>
+            <td> <button id="btnEliminar" onclick = "clickEliminar('{{this.id}}')" class="btn btn-danger btn-circle">
+                <i class="fas fa-trash"></i>                
+            </button> </td>
         </tr>
         {{/each}}
     </table>

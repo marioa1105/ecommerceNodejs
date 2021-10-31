@@ -31,9 +31,12 @@ passport.use('signup', new LocalStrategy({
     let exists = await usuarioService.existsUser(email);
     
     if (exists) {
-        return done(null, false, console.log('mensaje', 'usuario ya existe'));
+        return done(null, false, console.log('mensaje', 'Usuario ya existe'));
     } else {       
         let newUser =  req.body;
+        if (newUser.password != newUser.passwordConfirm){
+            return done(null, false, console.log('mensaje', 'La contraseñas no coinciden.'));
+        }
         await usuarioService.saveUsuario(newUser);
         usuarioService.notificacionUsuario(newUser);
         return done(null, newUser);

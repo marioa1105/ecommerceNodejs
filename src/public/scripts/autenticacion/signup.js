@@ -5,6 +5,7 @@ btnRegistrar.addEventListener("click",function(e){
     let newUser = {
         email : document.getElementById('txtEmail').value,
         password: document.getElementById('txtPassword').value,
+        passwordConfirm: document.getElementById('txtPasswordConfirm').value,
         nombre: document.getElementById('txtNombre').value,
         direccion: document.getElementById('txtDireccion').value,
         edad: document.getElementById('txtEdad').value,

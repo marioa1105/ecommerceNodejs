@@ -1,10 +1,16 @@
 const path = require('path');
 const dotenv = require('dotenv');
-console.log(path.resolve(process.cwd(), process.env.NODE_ENV + '.env'));
-dotenv.config({
-    path:path.resolve(process.cwd(), process.env.NODE_ENV + '.env')
-});
 
+//console.log(path.resolve(process.cwd(), process.env.NODE_ENV + '.env'));
+if(process.env.NODE_ENV == undefined){
+    dotenv.config();
+}else{
+    dotenv.config({
+        path:path.resolve(process.cwd(), process.env.NODE_ENV + '.env')
+    });
+}
+
+console.log('NODE_ENV:' + process.env.TWILIO_SID)
 module.exports.NODE_ENV = process.env.NODE_ENV || 'development';
 module.exports.SMTP_EMAIL = process.env.SMTP_EMAIL || '';
 module.exports.SMTP_PASSWORD = process.env.SMTP_PASSWORD ||  ''
