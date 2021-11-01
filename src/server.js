@@ -11,6 +11,7 @@ const FileStore = require('session-file-store')(session);
 
 const productoRoutes = require('./routes/routeProducto.js');
 const carritoRoutes = require('./routes/routeCarrito.js');
+const routeDoc = require('./routes/routeApiDoc');
 const viewProductosRoutes = require('./routes/routeViewProductos');
 const viewCarritoRoutes = require('./routes/routeViewCarrito');
 const passport = require('./autenticacion/passportLocal.js');
@@ -56,6 +57,7 @@ app.use('/api',productoRoutes);
 app.use('/api',carritoRoutes);
 app.use('/productos',viewProductosRoutes);
 app.use('/carrito',viewCarritoRoutes);
+app.use('/api-doc',routeDoc);
 //INDEX
 app.get('/',authUser.auth, (req,res)=>{   
     

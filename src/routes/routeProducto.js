@@ -15,6 +15,17 @@ route.get('/productos/listar',async(req,res)=>{
     }   
 });
 
+/**
+ * @swagger 
+ * api/productos/listar/{id}
+ *  get:
+ *      summary: Devuelve un producto por ID
+ *      produces:
+ *          -application/json
+ *      parameters:
+ *          --id: Identificador unico del producto
+*/
+
 route.get('/productos/listar/:id',(req,res)=>{
     try{        
         serviceProducto
