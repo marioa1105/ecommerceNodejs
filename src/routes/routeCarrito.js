@@ -34,7 +34,7 @@ route.delete('/carrito/borrar/:id',async(req,res)=>{
         res.status(404).json({error: err.message});
     }    
 });
-route.post('/carrito/finalizar',async(req,res)=>{
+route.post('/carrito/confirmar',async(req,res)=>{
     try{                  
         let item = await serviceCarrito.finalizarCompra(req.session.username);
         res.json(item);

@@ -6,6 +6,9 @@ const Mailer  = require('../messaging/Mailer');
 const Messaging = require('../messaging/Message');
 const UsuariosController = require('./UsuarioController');
 const configEnv = require('../config/config');
+const OrdenController = require('./OrdenController');
+
+
 class Carrito{
     constructor(){
         
@@ -43,6 +46,8 @@ class Carrito{
         let controller = new UsuariosController();
         let usuario = await controller.getUserByEmail(username);
         let carrito = await this.getProductosCarritoById(username);
+        let ordenController = new OrdenController();
+        let orden = await ordenController.saveOrden(carrito.id, usuario.email);
         this.notificacionCompra(carrito[0], usuario);
     }
     notificacionCompra(carrito, usuario){

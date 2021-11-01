@@ -2,7 +2,7 @@ const btnFinalizar = document.getElementById("btnFinalizarCarrito");
 const bntEliminar = document.getElementById("btnEliminar");
 btnFinalizar.addEventListener("click",function(e){
     e.preventDefault();    
-    fetch(`/api/carrito/finalizar`, {        
+    fetch(`/api/carrito/confirmar`, {        
         method: 'POST'
     })
     .then(respuesta => {
