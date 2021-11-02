@@ -1,8 +1,14 @@
 const Model = require('./model/Orden');
 const IBase = require('../base/ICrudBase');
+const mongoose = require('mongoose');
+const connection = require('../config/Connection');
 class Orden extends IBase{
     constructor(){
-
+        super();
+        mongoose.connect(connection, { useNewUrlParser: true, useUnifiedTopology: true })
+            .then(()=> {
+                console.log('Conexion exitosa');
+            });
     }
     async save(orden){
         try{
@@ -18,7 +24,7 @@ class Orden extends IBase{
             lastOrder = lastOrder + 1 || 1;
             return lastOrden;
         }catch(error){
-            throw new Error(error.message);
+            return 1;
         }
     }
 }
