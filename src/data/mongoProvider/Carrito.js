@@ -22,6 +22,23 @@ class Carrito extends IBase{
 
         return lastId;
     }
+    async confirmCarrito(data){
+        try{
+            let _id = new ObjectId(data.id);
+            await Model.updateOne({
+                                        _id: _id,
+                                        finalizado:0
+                                    },
+                                    {
+                                        finalizado:1
+                                    });
+            return;
+        }
+        catch(err)
+        {
+            throw Error(`Error actualizando carrito ${err.message}`);
+        }
+    }
     async save(data){
         try{    
             let carrito = await this.getById(data.username);              
@@ -64,7 +81,7 @@ class Carrito extends IBase{
             if (id == undefined){
                 items = await Model.findOne({});    
             }else{
-                items = await Model.findOne({username: id});
+                items = await Model.findOne({username: id, finalizado: 0});
             }
             let carrito = {};
             if (items != null){

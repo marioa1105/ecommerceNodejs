@@ -47,6 +47,7 @@ class Carrito{
         let usuario = await controller.getUserByEmail(username);
         let carrito = await this.getProductosCarritoById(username);
         let ordenController = new OrdenController();
+        this.data.confirmCarrito(carrito);
         let orden = await ordenController.saveOrden(carrito.id, usuario.email);
         this.notificacionCompra(carrito, usuario);
     }
