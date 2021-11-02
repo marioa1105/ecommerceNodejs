@@ -48,11 +48,11 @@ class Carrito{
         let carrito = await this.getProductosCarritoById(username);
         let ordenController = new OrdenController();
         let orden = await ordenController.saveOrden(carrito.id, usuario.email);
-        this.notificacionCompra(carrito[0], usuario);
+        this.notificacionCompra(carrito, usuario);
     }
     notificacionCompra(carrito, usuario){
         let mail = new Mailer(configEnv.SMTP_EMAIL,configEnv.SMTP_PASSWORD,configEnv.SMTP_FROM);
-        let messaging = new Messaging(configEnvprocess.env.TWILIO_SID,configEnv.TWILIO_TOKEN);
+        let messaging = new Messaging(configEnv.TWILIO_SID,configEnv.TWILIO_TOKEN);
         let subject = `Nuevo pedido de ${usuario.nombre} - ${usuario.email}`;
         let bodyMail ="";
         let message = subject;
