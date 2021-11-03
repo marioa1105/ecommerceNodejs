@@ -8,7 +8,7 @@ const serviceCarrito = new Carrito();
 route.get('/carrito/listar',async(req,res)=>{
     try{        
         
-        let item = await serviceCarrito.getProductosCarritoById(req.query.id);
+        let item = await serviceCarrito.getProductosCarritoById(req.session.username);
         res.json(item);
 
     }catch(err){

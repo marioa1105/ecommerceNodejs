@@ -1,0 +1,46 @@
+api/productos
+	POST
+		/agregar
+			{
+				"timestamp": "2021-07-19T02:12:25.442Z",
+				"nombre": "Cuaderno",
+				"descripcion": "Cuaderno tapa dura - anillado - cuadriculado",
+				"foto": "https://cdn3.iconfinder.com/data/icons/education-209/64/book-note-paper-school-128.png",
+				"precio": 80,
+				"stock": 10,
+				"codigo":10
+			}
+	GET
+		/listar
+		/listar:id
+			:id - Id Producto
+	PUT
+		/actualizar/:id
+			:id - Id Producto
+			{
+				"nombre": "Escuadra update sql",
+				"descripcion": "Escuadra update sql",
+				"foto": "https://cdn3.iconfinder.com/data/icons/education-209/64/ruler-triangle-stationary-school-128.png",
+				"precio": 80,
+				"codigo":102,
+				"stock": 10
+			}
+	DELETE
+		/borrar/:id
+			:id - Id Producto
+			
+api/carrito
+	POST
+		/agregar/:id
+			:id - Id Producto
+		/confirmar
+			:id - Id Producto
+	DELETE 
+		/borrar/:id
+			:id - Id Producto
+/login
+    POST
+        {
+            "username":"marioa1105@gmail.com",
+            "password":"1234"
+        }

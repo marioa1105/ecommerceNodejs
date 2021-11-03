@@ -1,4 +1,4 @@
-const UsuarioData = require('../Data/factory/UsuarioFactory');
+const UsuarioData = require('../data/factory/FactoryDAO')('Usuario');//require('../Data/factory/UsuarioFactory');
 const Model = require('../DTO/Usuario');
 const bcrypt = require('bcrypt');
 const Mailer  = require('../messaging/Mailer');

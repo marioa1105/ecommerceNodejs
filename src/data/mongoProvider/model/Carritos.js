@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 
 const schema = mongoose.Schema({
-    username:{type:String, require:true, unique:true},
+    username:{type:String, require:true},
     timestamp:{type:Date, default: Date.now},
     productos: {type: Array},
     finalizado:{type: Number, default:0}

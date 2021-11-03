@@ -57,7 +57,8 @@ app.use('/api',productoRoutes);
 app.use('/api',carritoRoutes);
 app.use('/productos',viewProductosRoutes);
 app.use('/carrito',viewCarritoRoutes);
-app.use('/api-doc',routeDoc);
+//app.use('/api-doc',routeDoc);
+app.use(routeDoc)
 //INDEX
 app.get('/',authUser.auth, (req,res)=>{   
     

@@ -20,9 +20,13 @@ class Orden extends IBase{
     }
     async getLastOrder(){
         try{
-            let lastOrder = await Model.findOne({nroOrden}).sort({nroOrden: "desc"}).limit(1);
-            lastOrder = lastOrder + 1 || 1;
-            return lastOrden;
+            let lastOrder = await Model.find({}).sort({nroOrden: -1}).limit(1);
+            if (lastOrder.length == 0)
+            {
+                return 1
+            }
+            
+            return lastOrder[0].nroOrden + 1;
         }catch(error){
             return 1;
         }

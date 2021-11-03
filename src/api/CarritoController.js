@@ -1,6 +1,6 @@
 const ProductoModel = require("../DTO/Producto");
 const ProductoController = require('./ProductoController');
-const CarritoData = require("../data/factory/CarritoFactory");
+const CarritoData = require('../data/factory/FactoryDAO')('Carrito'); //require("../data/factory/CarritoFactory");
 const CarritoModel = require("../DTO/Carrito");
 const Mailer  = require('../messaging/Mailer');
 const Messaging = require('../messaging/Message');

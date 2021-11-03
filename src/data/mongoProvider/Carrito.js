@@ -43,11 +43,12 @@ class Carrito extends IBase{
         try{    
             let carrito = await this.getById(data.username);              
             if(carrito.id == ""){                
-                Model.create(data);
+                await Model.create(data);
             }           
             else
             {
-                await Model.updateOne({username:data.username},
+                
+                await Model.updateOne({ _id : carrito.id },
                         {
                             $push:{
                                 productos: data.productos[0]

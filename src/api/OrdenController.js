@@ -1,5 +1,5 @@
 
-const OrdenDao = require('../data/factory/FactoryDAO');
+const OrdenDao = require('../data/factory/FactoryDAO')('Orden');
 const OrdenDto = require('../DTO/Orden');
 
 class OrdenController {

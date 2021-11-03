@@ -1,4 +1,4 @@
-const ProductoData = require('../Data/factory/ProductoFactory');
+const ProductoData = require('../data/factory/FactoryDAO')('Producto');//require('../Data/factory/ProductoFactory');
 const Model = require('../DTO/Producto');
 
 class Producto{     
