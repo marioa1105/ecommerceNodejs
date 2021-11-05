@@ -60,17 +60,20 @@ app.use('/carrito',viewCarritoRoutes);
 //app.use('/api-doc',routeDoc);
 app.use(routeDoc)
 //INDEX
-app.get('/',authUser.auth, (req,res)=>{   
+app.get('/',    
+    authUser.auth
+    , (req,res)=>{   
     
     res.redirect('productos/listado');    
 });
 
 //LOGIN
-app.post('/login', passport.authenticate('login', { failureRedirect: '/faillogin' }),(req,res)=>{
+app.post('/login', passport.authenticate('login', { failureRedirect: '/faillogin' }),    
+    (req,res)=>{
     let { username } = req.body;
     req.session.username = username;  
-    
-    res.redirect('/');    
+    console.log('Login OK');
+    res.json({statusLogin: true })
 });
 app.get('/login', (req, res) => {
     
