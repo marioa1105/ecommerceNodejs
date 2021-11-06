@@ -1,6 +1,8 @@
 const express = require('express');
 const route = express.Router();
 const authUser = require('../middleware/authUser');
+
+
 const CarritoController = require('../api/CarritoController');
 //CARRITO
 route.get('/listado',authUser.auth, async(req,res) => {

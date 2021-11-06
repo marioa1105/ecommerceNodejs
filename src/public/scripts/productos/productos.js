@@ -9,8 +9,8 @@ btnEnviar.addEventListener("click",function(e){
                     stock: document.getElementById('stock').value,
                     descripcion: document.getElementById('descripcion').value };
     console.log(data);
-    fetch('/api/productos/agregar', {
-        headers: {
+    fetch('/productos/agregar', {
+        Headers: {
             'Content-Type': 'application/json'
         },
         method: 'POST',

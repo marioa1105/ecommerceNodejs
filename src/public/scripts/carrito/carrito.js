@@ -3,7 +3,10 @@ const bntEliminar = document.getElementById("btnEliminar");
 btnFinalizar.addEventListener("click",function(e){
     e.preventDefault();    
     fetch(`/api/carrito/confirmar`, {        
-        method: 'POST'
+        method: 'POST',
+        Headers:{
+            'Authorization': _TOKEN
+        }
     })
     .then(respuesta => {
             alert('Compra finalizada...');
@@ -16,7 +19,10 @@ btnFinalizar.addEventListener("click",function(e){
 
 function clickEliminar(id){
     fetch(`/api/carrito/borrar/` + id , {        
-        method: 'DELETE'
+        method: 'DELETE',
+        Headers:{
+            'Authorization': _TOKEN
+        }
     })
     .then(respuesta => {            
             window.location.href = '/carrito/listado';

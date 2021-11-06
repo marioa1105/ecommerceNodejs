@@ -2,6 +2,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const UsuarioController = require('../api/UsuarioController');
 
+
 //LOGIN
 passport.use('login', new LocalStrategy({
     passReqToCallback: true

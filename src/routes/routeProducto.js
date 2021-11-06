@@ -3,6 +3,8 @@ const route = express.Router();
 const Producto = require('../api/ProductoController')
 const serviceProducto = new Producto();
 const admin = require('../helpers/admin');
+const authUser = require('../middleware/authUser');
+const checkTokenAuth = require('../middleware/checkToken');
 //TODO Agregar validacion administrador
 
 route.get('/productos/listar',async(req,res)=>{
@@ -39,7 +41,7 @@ route.get('/productos/listar/:id',(req,res)=>{
     }    
 });
 
-route.post('/productos/agregar',permisosAdmin, async(req,res)=>{
+route.post('/productos/agregar',authUser.auth,checkTokenAuth, async(req,res)=>{
     try{    
         let item = await serviceProducto.saveProducto(req.body);
         res.json(item); 
@@ -53,7 +55,7 @@ route.post('/productos/agregar',permisosAdmin, async(req,res)=>{
     }    
 }); 
 
-route.put('/productos/actualizar/:id',permisosAdmin,async(req,res)=>{
+route.put('/productos/actualizar/:id',authUser.auth,checkTokenAuth,async(req,res)=>{
     try{        
         let items = await serviceProducto.updateProducto(req.body, req.params.id);
         res.json(items);
@@ -63,7 +65,7 @@ route.put('/productos/actualizar/:id',permisosAdmin,async(req,res)=>{
     }    
 });
 
-route.delete('/productos/borrar/:id',permisosAdmin,async(req,res)=>{
+route.delete('/productos/borrar/:id',authUser.auth,checkTokenAuth,async(req,res)=>{
     try{        
         let items = await serviceProducto.deleteProducto(req.params.id);
         res.json(items);        

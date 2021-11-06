@@ -11,6 +11,7 @@ if(process.env.NODE_ENV == undefined){
 }
 
 console.log('NODE_ENV:' + process.env.TWILIO_SID)
+module.exports.PORT = process.env.PORT || '8080';
 module.exports.NODE_ENV = process.env.NODE_ENV || 'development';
 module.exports.SMTP_EMAIL = process.env.SMTP_EMAIL || '';
 module.exports.SMTP_PASSWORD = process.env.SMTP_PASSWORD ||  ''
@@ -20,3 +21,6 @@ module.exports.TWILIO_SID = process.env.TWILIO_SID || 'AC312313123123'
 module.exports.TWILIO_TOKEN = process.env.TWILIO_TOKEN || '123123123'
 module.exports.TWILIO_PHONE_NUMBER = process.env.TWILIO_PHONE_NUMBER || '1123123123123'
 module.exports.TWILIO_PHONE_ADMIN = process.env.TWILIO_PHONE_ADMIN || '123123123'
+module.exports.JWT_SECRET = process.env.JWT_SECRET || 'secret'
+module.exports.HOST = process.env.HOST || 'http://localhost'
+module.exports.V_API = process.env.V_API || 'api'

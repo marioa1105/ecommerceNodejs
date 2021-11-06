@@ -6,7 +6,7 @@ const io = require('socket.io')(server);
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
-
+const configEnv = require('./config/config');
 
 
 const productoRoutes = require('./routes/routeProducto.js');
@@ -16,10 +16,10 @@ const viewProductosRoutes = require('./routes/routeViewProductos');
 const viewCarritoRoutes = require('./routes/routeViewCarrito');
 const passport = require('./autenticacion/passportLocal.js');
 const authUser = require('./middleware/authUser');
+const jwt = require('jsonwebtoken');
 
 
-
-const PORT = 8080;
+const PORT = configEnv.PORT;
 
 //configuracion server
 app.use(express.json());
@@ -53,8 +53,8 @@ app.set('view engine', 'hbs');
 app.set('views', __dirname + '/views');
 
 //API
-app.use('/api',productoRoutes);
-app.use('/api',carritoRoutes);
+app.use(`/${configEnv.V_API}`,productoRoutes);
+app.use(`/${configEnv.V_API}`,carritoRoutes);
 app.use('/productos',viewProductosRoutes);
 app.use('/carrito',viewCarritoRoutes);
 //app.use('/api-doc',routeDoc);
@@ -71,9 +71,11 @@ app.get('/',
 app.post('/login', passport.authenticate('login', { failureRedirect: '/faillogin' }),    
     (req,res)=>{
     let { username } = req.body;
+    let token = jwt.sign({ data: username }, configEnv.JWT_SECRET, { expiresIn: '1m' });
     req.session.username = username;  
-    console.log('Login OK');
-    res.json({statusLogin: true })
+    req.session.token = token;
+   
+    res.send({token: token});
 });
 app.get('/login', (req, res) => {
     
