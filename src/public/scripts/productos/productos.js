@@ -10,9 +10,9 @@ btnEnviar.addEventListener("click",function(e){
                     descripcion: document.getElementById('descripcion').value };
     console.log(data);
     fetch('/productos/agregar', {
-        Headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: {
+            'Content-Type': 'application/json'            
+          },
         method: 'POST',
         body: JSON.stringify(data)
     })

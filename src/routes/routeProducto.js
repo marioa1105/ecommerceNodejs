@@ -41,7 +41,7 @@ route.get('/productos/listar/:id',(req,res)=>{
     }    
 });
 
-route.post('/productos/agregar',authUser.auth,checkTokenAuth, async(req,res)=>{
+route.post('/productos/agregar',checkTokenAuth, async(req,res)=>{
     try{    
         let item = await serviceProducto.saveProducto(req.body);
         res.json(item); 
@@ -55,7 +55,7 @@ route.post('/productos/agregar',authUser.auth,checkTokenAuth, async(req,res)=>{
     }    
 }); 
 
-route.put('/productos/actualizar/:id',authUser.auth,checkTokenAuth,async(req,res)=>{
+route.put('/productos/actualizar/:id',checkTokenAuth,async(req,res)=>{
     try{        
         let items = await serviceProducto.updateProducto(req.body, req.params.id);
         res.json(items);
@@ -65,7 +65,7 @@ route.put('/productos/actualizar/:id',authUser.auth,checkTokenAuth,async(req,res
     }    
 });
 
-route.delete('/productos/borrar/:id',authUser.auth,checkTokenAuth,async(req,res)=>{
+route.delete('/productos/borrar/:id',checkTokenAuth,async(req,res)=>{
     try{        
         let items = await serviceProducto.deleteProducto(req.params.id);
         res.json(items);        

@@ -35,7 +35,8 @@ routes.post('/agregar',authUser.auth, async(req,res) => {
             withCredentials: true,
             headers:{
                 Authorization: req.session.token
-            }
+            },
+            data:req.body
         }
     ).then(function(response){                
         res.send(response.data);

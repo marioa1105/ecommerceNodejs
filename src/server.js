@@ -71,7 +71,7 @@ app.get('/',
 app.post('/login', passport.authenticate('login', { failureRedirect: '/faillogin' }),    
     (req,res)=>{
     let { username } = req.body;
-    let token = jwt.sign({ data: username }, configEnv.JWT_SECRET, { expiresIn: '1m' });
+    let token = jwt.sign({ data: username }, configEnv.JWT_SECRET, { expiresIn: '10m' });
     req.session.username = username;  
     req.session.token = token;
    
