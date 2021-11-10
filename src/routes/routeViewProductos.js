@@ -45,12 +45,23 @@ routes.post('/agregar',authUser.auth, async(req,res) => {
 
 routes.get('/:id',authUser.auth,async(req,res) => {
     try{
-        let apiProducto = new ProductosAPI();
-        let producto = await apiProducto.getProductoById(req.params.id);
+
+        let response = await axios(
+            {
+                url:`/productos/listar/${req.params.id}`,
+                method:'get',
+                baseURL: `${configEnv.HOST}:${configEnv.PORT}/${configEnv.V_API}`                                
+            }
+        );  
+        console.log("response");
+        console.log(response);
+         
+        let producto = response.data;
         let noExiste = producto == null? true: false;
         res.render('productos/producto', { producto: producto, noExiste: noExiste});
     }
     catch(error){
+        console.log(error);
         res.render('productos/producto', { producto: new ProductoDto(), noExiste: true});
     }
    
