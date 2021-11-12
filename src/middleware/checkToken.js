@@ -11,6 +11,7 @@ module.exports = function(req,res,next){
         if (err) return res.status(500).send('Fallo la autenticacion con token');
 
         req.user = value;
+        req.session.username = req.user.data;
         next();
     });
 }
