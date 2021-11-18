@@ -15,11 +15,8 @@ btnFinalizar.addEventListener("click",function(e){
 },false);
 
 function clickEliminar(id){
-    fetch(`/api/carrito/borrar/` + id , {        
-        method: 'DELETE',
-        Headers:{
-            'Authorization': _TOKEN
-        }
+    fetch(`/carrito/borrar/` + id , {        
+        method: 'DELETE'
     })
     .then(respuesta => {            
             window.location.href = '/carrito/listado';

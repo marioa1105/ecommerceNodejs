@@ -74,4 +74,20 @@ route.post('/confirmar',async(req,res)=>{
                     )
     res.send(response.data);
 });
+
+route.delete('/borrar/:id',async(req,res) => {
+    let response = await axios(
+        {
+            url:`/carrito/borrar/${req.params.id}`,
+            method:'delete',
+            baseURL: `${configEnv.HOST}:${configEnv.PORT}/${configEnv.V_API}`,
+            withCredentials: true,
+            headers:{
+                Authorization: req.session.token
+            }
+        }
+    )
+    res.send(response.data);
+})
+
 module.exports = route;

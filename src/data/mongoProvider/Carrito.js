@@ -69,8 +69,8 @@ class Carrito extends IBase{
         try{
             let _id = ObjectId(data.id_producto);
             
-            let result = await Model.update({username:data.id, $pull: {productos:{id:_id}}});
-            console.log(result);
+            let result = await mongoose.connection.db.collection(Model.collection.collectionName).updateOne({username: data.id, finalizado: 0},{$pull: {productos:{id:_id}}})
+            
         }
         catch(err){
             throw new Error(`Error al eliminar el producto: ${err.message}`);
